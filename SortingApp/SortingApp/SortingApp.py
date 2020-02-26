@@ -66,8 +66,6 @@ def doEvent():
             print ("You pressed the left mouse button at (%d, %d)" % event.pos)
             w,h  = pygame.display.get_surface().get_size()
             x,y = event.pos
-
-            cellPos =  (int(x / (w/3)),int(y / (h/3)))
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_RETURN:
             print("Sorting....")
             doSort = True
