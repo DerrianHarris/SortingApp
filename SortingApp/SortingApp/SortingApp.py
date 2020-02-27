@@ -13,7 +13,7 @@ window = pygame.display.set_mode(window_size)
 pygame.display.set_caption("TicTacToe")
 run = True
 Numbers = []
-sortType = 3
+sortType = 0
 doSort = False
 setValue = True
 for i in range(window_size[0]):
@@ -57,6 +57,8 @@ def doRender(count, j):
         sorterText = "Current Sorter: Quick Sort"
     elif(sortType == 5):
         sorterText = "Current Sorter: Heap Sort"
+    elif(sortType == 6):
+        sorterText = "Current Sorter: Shell Sort"
 
     color = (200,200,200)
     text = font.render(sorterText,True,color)
@@ -111,6 +113,10 @@ def doEvent():
             sortType = 5
             print("Setting Sorter to Heap Sort....")
             doRender(0,0)
+        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_7 and not doSort:
+            sortType = 6
+            print("Setting Sorter to Shell Sort....")
+            doRender(0,0)
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_r:
             Numbers = []
             doSort = False
@@ -151,6 +157,10 @@ def doLogic():
             #HeapSort
             HeapSort(Numbers,len(Numbers))
             doSort = False
+        elif sortType == 6:
+            #ShellSort
+            ShellSort(Numbers,len(Numbers))
+
         setValue = False
         
         #print(Numbers)
@@ -284,7 +294,21 @@ def Heapify(arr, n, i):
         Swap(i,largest)
         Heapify(arr,n,largest)
     
-    
+def ShellSort(arr, n):
+    gap = math.floor(n/2)
+    while gap > 0:
+        for i in range(gap,n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j-gap] > temp:
+                arr[j] = arr[j-gap]
+                j = j - gap
+            arr[j] = temp
+        doRender(gap,0)
+        gap = math.floor(gap/2)
+        doRender(gap,0)
+    global doSort
+    doSort = False
 
 def Swap(indexA, indexB):
     global Numbers
