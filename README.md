@@ -8,7 +8,7 @@ App created to show the different sorting algorithms.
 
 - Run SortingApp.py
 
-- Use Key Inputs:
+- Key Inputs:
   * R - Reset App
   * Enter/Return - Start Sort
   * ESC - End App
