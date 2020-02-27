@@ -2,9 +2,10 @@ import pygame
 from pygame.locals import *
 import time
 import random
-window_size = (500,500)
+import math
+window_size = (1000,1000)
 
-
+Hight_Padding = 50
 
 
 pygame.init()
@@ -16,7 +17,7 @@ sortType = 3
 doSort = False
 setValue = True
 for i in range(window_size[0]):
-    Numbers.append(random.randint(0,window_size[1]))
+    Numbers.append(random.randint(0,window_size[1]-Hight_Padding))
 
 
         
@@ -29,32 +30,48 @@ for i in range(window_size[0]):
 def doRender(count, j):
     window.fill((0,0,0))
     w,h  = pygame.display.get_surface().get_size()
-    font = pygame.font.SysFont("comicsansms",100)
+    font = pygame.font.SysFont("comicsansms",30)
 
     global Numbers
 
     for x in range(len(Numbers)):
         if x == count:
-            pygame.draw.line(window,(250,0,0),(x,window_size[1]),(x,Numbers[x]))
+            pygame.draw.line(window,(250,0,0),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
         elif x == j:
-            pygame.draw.line(window,(0,250,0),(x,window_size[1]),(x,Numbers[x]))
+            pygame.draw.line(window,(0,250,0),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
         else:
-            pygame.draw.line(window,(200,200,200),(x,window_size[1]),(x,Numbers[x]))
+            pygame.draw.line(window,(200,200,200),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
     
     
+    sorterText = ""
 
-    #font = pygame.font.SysFont("comicsansms",40)
-    #text = font.render("Press R to reset...",True,color)
-    #pos = (w/2,(h/2) + 70)
-    #textRect = text.get_rect()
-    #textRect.center = pos
-    #pygame.display.get_surface().blit(text,textRect)
+    if(sortType == 0):
+        sorterText = "Current Sorter: Selection Sort"
+    elif(sortType == 1):
+        sorterText = "Current Sorter: Insertion Sort"
+    elif(sortType == 2):
+        sorterText = "Current Sorter: Bubble Sort"
+    elif(sortType == 3):
+        sorterText = "Current Sorter: Merge Sort"
+    elif(sortType == 4):
+        sorterText = "Current Sorter: Quick Sort"
+    elif(sortType == 5):
+        sorterText = "Current Sorter: Heap Sort"
+
+    color = (200,200,200)
+    text = font.render(sorterText,True,color)
+    pos = (w/2,(h - (Hight_Padding/2)))
+    textRect = text.get_rect()
+    textRect.center = pos
+    pygame.display.get_surface().blit(text,textRect)
+
     pygame.display.update()
 
 def doEvent():
     global run
     global sortType
     global doSort
+    global setValue
     global Numbers
 
     for event in pygame.event.get():
@@ -73,24 +90,36 @@ def doEvent():
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_1 and not doSort:
             sortType = 0
             print("Setting Sorter to Selection Sort....")
+            doRender(0,0)
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_2 and not doSort:
             sortType = 1
             print("Setting Sorter to Insertion Sort....")
+            doRender(0,0)
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_3 and not doSort:
             sortType = 2
             print("Setting Sorter to Bubble Sort....")
+            doRender(0,0)
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_4 and not doSort:
             sortType = 3
             print("Setting Sorter to Merge Sort....")
+            doRender(0,0)
+        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_5 and not doSort:
+            sortType = 4
+            print("Setting Sorter to Quick Sort....")
+            doRender(0,0)
+        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_6 and not doSort:
+            sortType = 5
+            print("Setting Sorter to Heap Sort....")
+            doRender(0,0)
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_r:
             Numbers = []
-            sortType = 3
             doSort = False
             setValue = True
             for i in range(window_size[0]):
-                Numbers.append(random.randint(0,window_size[1]))
+                Numbers.append(random.randint(0,window_size[1]-Hight_Padding))
             print("Reseting...")
             doRender(0,0)
+
 
 count = 0
 def doLogic():
@@ -103,44 +132,69 @@ def doLogic():
     if(doSort):
         if sortType == 0:
             #SelectionSort
-            if setValue:
-                count = 0
-            min_index = 0
-            if count <= len(Numbers) - 1:
-                min_index = count
-                for j in range(count+1,len(Numbers)):
-                    if(Numbers[j] < Numbers[min_index]):
-                        min_index = j
-                    doRender(count,j)
-                Swap(min_index,count)
-                
-                count = count + 1
+            count = SelectiveSort(Numbers,count,setValue)
         elif sortType == 1:
             #InsertionSort
-            if setValue:
-                count = 1
-            if count < len(Numbers):
-                j = count
-                while(j > 0 and Numbers[j-1] > Numbers[j]):
-                    Swap(j,j-1)
-                    doRender(count,j)
-                    j = j-1
-                count = count + 1
+            count = InsertionSort(Numbers,count, setValue)
         elif sortType == 2:
             #BubbleSort
-            if count < len(Numbers)-1:
-                for j in range(len(Numbers)-count -1):
-                    if Numbers[j] > Numbers[j+1]:
-                        Swap(j,j+1)
-                    doRender(count,j)
-                count = count + 1
+            count = BubbleSort(Numbers,count, setValue)
         elif sortType == 3:
             #MergeSort
             MergeSort(Numbers,0,len(Numbers)-1)
             doSort = False
+        elif sortType == 4:
+            #QuickSort
+            QuickSort(Numbers,0,len(Numbers)-1)
+            doSort = False
+        elif sortType == 5:
+            #HeapSort
+            HeapSort(Numbers,len(Numbers))
+            doSort = False
         setValue = False
         
         #print(Numbers)
+
+
+def SelectiveSort(Numbers,count, setValue):
+    if setValue:
+        count = 0
+    min_index = 0
+    if count != None and count <= len(Numbers) - 1:
+        min_index = count
+        for j in range(count+1,len(Numbers)):
+            if(Numbers[j] < Numbers[min_index]):
+                min_index = j
+        doRender(count,min_index)
+        Swap(min_index,count)   
+        return count + 1
+    global doSort
+    doSort = False
+
+def BubbleSort(Numbers,count, setValue):
+    if setValue:
+        count = 0
+    if count != None and count < len(Numbers)-1:
+        for j in range(len(Numbers)-count -1):
+            if Numbers[j] > Numbers[j+1]:
+                Swap(j,j+1)
+        doRender(count,j)
+        return count + 1
+    global doSort
+    doSort = False
+
+def InsertionSort(Numbers,count, setValue):
+    if setValue:
+        count = 1
+    if count != None and count < len(Numbers):
+        j = count
+        while(j > 0 and Numbers[j-1] > Numbers[j]):
+            Swap(j,j-1)
+            j = j-1
+        doRender(count,j)
+        return count + 1
+    global doSort
+    doSort = False
 
 def MergeSort(arr,l,r):
     if l < r:
@@ -186,6 +240,51 @@ def Merge(arr,l,m,r):
         arr[k] = R[j]
         j=j+1
         k = k+1
+
+
+def QuickSort(arr, l, h):
+    if l < h:
+        pi = Partition(arr,l,h)
+        QuickSort(arr,l,pi-1)
+        QuickSort(arr,pi+1,h)
+        doRender(l,h)
+
+def Partition(arr,l,h):
+    pivot = arr[h]
+    i = (l-1)
+    for j in range(l,h):
+        if arr[j] < pivot:
+            i = i + 1
+            Swap(i,j)
+    Swap(i+1,h)
+    return i+1
+
+def HeapSort(arr,n):
+    for i in range(math.floor(n/ 2)-1,-1,-1):
+        Heapify(arr,n,i)
+        doRender(n,i)
+    for i in range(n-1,0,-1):
+        Swap(0,i)
+        Heapify(arr,i,0)
+        doRender(i,0)
+
+def Heapify(arr, n, i):
+    largest = i
+    l = 2*i+1
+    r = 2*i+2
+
+
+    if l < n and arr[l] > arr[largest]:
+        largest = l
+
+    if r < n and arr[r] > arr[largest]:
+        largest = r
+
+    if largest != i:
+        Swap(i,largest)
+        Heapify(arr,n,largest)
+    
+    
 
 def Swap(indexA, indexB):
     global Numbers
