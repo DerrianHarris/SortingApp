@@ -3,9 +3,11 @@ from pygame.locals import *
 import time
 import random
 import math
-window_size = (1000,1000)
+import colorsys
+ 
+window_size = (2000,1000)
 
-Hight_Padding = 50
+Height_Padding = 50
 
 
 pygame.init()
@@ -17,7 +19,7 @@ sortType = 0
 doSort = False
 setValue = True
 for i in range(window_size[0]):
-    Numbers.append(random.randint(0,window_size[1]-Hight_Padding))
+    Numbers.append(random.randint(0,window_size[1]-Height_Padding))
 
 
         
@@ -29,18 +31,24 @@ for i in range(window_size[0]):
 
 def doRender(count, j):
     window.fill((0,0,0))
-    w,h  = pygame.display.get_surface().get_size()
+    Width,Height  = pygame.display.get_surface().get_size()
     font = pygame.font.SysFont("comicsansms",30)
 
     global Numbers
 
     for x in range(len(Numbers)):
-        if x == count:
-            pygame.draw.line(window,(250,0,0),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
-        elif x == j:
-            pygame.draw.line(window,(0,250,0),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
-        else:
-            pygame.draw.line(window,(200,200,200),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
+        h = Numbers[x]/(window_size[1]-Height_Padding)
+        s = 1.0
+        v = 1.0
+        color = colorsys.hsv_to_rgb(h,s,v)        
+        r,g,b = color
+        pygame.draw.line(window,(r*255,g*255,b*255),(x,window_size[1]-Height_Padding),(x,Numbers[x]))
+        #if x == count:
+        #    pygame.draw.line(window,(250,0,0),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
+        #elif x == j:
+        #    pygame.draw.line(window,(0,250,0),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
+        #else:
+        #    pygame.draw.line(window,(200,200,200),(x,window_size[1]-Hight_Padding),(x,Numbers[x]))
     
     
     sorterText = ""
@@ -60,9 +68,8 @@ def doRender(count, j):
     elif(sortType == 6):
         sorterText = "Current Sorter: Shell Sort"
 
-    color = (200,200,200)
-    text = font.render(sorterText,True,color)
-    pos = (w/2,(h - (Hight_Padding/2)))
+    text = font.render(sorterText,True,(200,200,200))
+    pos = (Width/2,(Height - (Height_Padding/2)))
     textRect = text.get_rect()
     textRect.center = pos
     pygame.display.get_surface().blit(text,textRect)
@@ -122,7 +129,7 @@ def doEvent():
             doSort = False
             setValue = True
             for i in range(window_size[0]):
-                Numbers.append(random.randint(0,window_size[1]-Hight_Padding))
+                Numbers.append(random.randint(0,window_size[1]-Height_Padding))
             print("Reseting...")
             doRender(0,0)
 
