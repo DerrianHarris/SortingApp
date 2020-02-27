@@ -1,17 +1,14 @@
 import pygame
-import winsound
-from pygame.locals import *
-import time
 import random
 import math
 import colorsys
- 
+#import winsound
 
 
 # Variables
 FULLSCREEN = True
 window_size = (500,500)
-Line_Width = 10
+Line_Width = 1
 
 
 
@@ -111,10 +108,6 @@ def doEvent():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            print ("You pressed the left mouse button at (%d, %d)" % event.pos)
-            w,h  = pygame.display.get_surface().get_size()
-            x,y = event.pos
         elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_RETURN:
             print("Sorting....")
             doSort = True
@@ -197,10 +190,10 @@ def doLogic():
         #print(Numbers)
 
 
-def PlayBeep(index):
-    if mute:
-        return
-    winsound.Beep(starting_frq + index,100)
+#def PlayBeep(index):
+#    if mute:
+#        return
+#    winsound.Beep(starting_frq + index,100)
 
 def SelectiveSort(Numbers,count, setValue):
     if setValue:
