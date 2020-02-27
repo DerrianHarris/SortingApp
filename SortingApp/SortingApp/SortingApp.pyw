@@ -1,4 +1,5 @@
 import pygame
+import pygame.locals as Locals
 import random
 import math
 import colorsys
@@ -108,39 +109,39 @@ def doEvent():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_RETURN:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_RETURN:
             print("Sorting....")
             doSort = True
             setValue = True
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_1 and not doSort:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_1 and not doSort:
             sortType = 0
             print("Setting Sorter to Selection Sort....")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_2 and not doSort:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_2 and not doSort:
             sortType = 1
             print("Setting Sorter to Insertion Sort....")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_3 and not doSort:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_3 and not doSort:
             sortType = 2
             print("Setting Sorter to Bubble Sort....")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_4 and not doSort:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_4 and not doSort:
             sortType = 3
             print("Setting Sorter to Merge Sort....")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_5 and not doSort:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_5 and not doSort:
             sortType = 4
             print("Setting Sorter to Quick Sort....")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_6 and not doSort:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_6 and not doSort:
             sortType = 5
             print("Setting Sorter to Heap Sort....")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_7 and not doSort:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_7 and not doSort:
             sortType = 6
             print("Setting Sorter to Shell Sort....")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_r:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_r:
             Numbers = []
             doSort = False
             setValue = True
@@ -148,7 +149,7 @@ def doEvent():
                 Numbers.append(random.randint(0,Line_Start))
             print("Reseting...")
             doRender()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.locals.K_ESCAPE:
+        elif event.type == pygame.KEYDOWN and event.key == Locals.K_ESCAPE:
             run = False
 
 count = 0
